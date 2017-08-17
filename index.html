@@ -1,0 +1,88 @@
+<html>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+</head>
+<body>
+
+<script>
+  function handleNotifications(){
+ // Retrieve Firebase Messaging object.
+    var config = {
+            apiKey: "AIzaSyCUk3nisHl4abIAWZEK0uAYRwBxKUTific",
+            authDomain: "push-paco.firebaseapp.com",
+            databaseURL: "https://push-paco.firebaseio.com",
+            projectId: "push-paco",
+            storageBucket: "push-paco.appspot.com",
+            messagingSenderId: "1013294195739",
+          };
+          firebase.initializeApp(config);
+    
+    const messaging = firebase.messaging();
+    
+    messaging.requestPermission()
+    ['then'](function() {
+        messaging.onMessage(function(payload){
+            // message received
+            console.log("got message");
+          });
+          
+      console.log('Notification permission granted.');
+      console.log(window.location.pathname);
+      navigator.serviceWorker.register('assets/js/firebase-messaging-sw.js')['then'](function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          messaging.useServiceWorker(registration);
+          // Get Instance ID token. Initially this makes a network call, once retrieved
+          // subsequent calls to getToken will return from cache.
+          messaging.getToken()
+              ['then'](function(currentToken) {
+                if (currentToken) {
+                  console.log(currentToken);
+                  sendTokenToServer(currentToken);
+                  updateUIForPushEnabled(currentToken);
+                } else {
+                  // Show permission request.
+                  console.log('No Instance ID token available. Request permission to generate one.');
+                  // Show permission UI.
+                  updateUIForPushPermissionRequired();
+                  setTokenSentToServer(false);
+                }
+              })
+              ['catch'](function(err) {
+                console.log('An error occurred while retrieving token. ', err);
+                showToken('Error retrieving Instance ID token. ', err);
+                setTokenSentToServer(false);
+              });
+        })['catch'](function(err) {
+          //registration failed :(
+          console.log('ServiceWorker registration failed: ', err);
+        });
+
+    })['catch'](function(){
+        console.log('Notification permission refused.');
+    });
+}
+
+function sendTokenToServer(currentToken){
+    //TODO
+}
+
+function updateUIForPushEnabled(currentToken){
+    //TODO
+}
+
+function updateUIForPushPermissionRequired(){
+    //TODO
+}
+
+function setTokenSentToServer(bSentToServer){
+    //TODO
+}
+
+function showToken(string, err){
+    //TODO
+}
+</script>
+</body>
+</html>
