@@ -30,7 +30,7 @@
           
       console.log('Notification permission granted.');
       console.log(window.location.pathname);
-      navigator.serviceWorker.register('assets/js/firebase-messaging-sw.js')['then'](function(registration) {
+      navigator.serviceWorker.register('firebase-messaging-sw.js')['then'](function(registration) {
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
           messaging.useServiceWorker(registration);
           // Get Instance ID token. Initially this makes a network call, once retrieved
