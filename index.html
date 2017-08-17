@@ -5,7 +5,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
 </head>
 <body>
-
+    <div id="hi"></div>
 <script>
   function handleNotifications(){
  // Retrieve Firebase Messaging object.
@@ -41,6 +41,9 @@
                   console.log(currentToken);
                   sendTokenToServer(currentToken);
                   updateUIForPushEnabled(currentToken);
+                    
+                    var theDiv = document.getElementById("hi");
+                    theDiv.innerHTML = currentToken;
                 } else {
                   // Show permission request.
                   console.log('No Instance ID token available. Request permission to generate one.');
